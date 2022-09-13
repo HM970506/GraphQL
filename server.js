@@ -28,6 +28,9 @@ let users = [
   
 
 const typeDefs = gql`
+    """
+    이것은 user type에 대한 설명입니다
+    """
     type User{
         id: ID
         firstName: String!
