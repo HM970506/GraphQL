@@ -3,10 +3,12 @@ const tweets = [
     {
       id: "1",
       text: "first one!",
+      userId: "2",
     },
     {
       id: "2",
       text: "second one",
+      userId: "1",
     },
   ];
 
@@ -49,6 +51,20 @@ const typeDefs = gql`
 `;
 
 const resolvers ={
+    Mutation:{
+        postTweet(root, {text, userId}){
+            if(users.find(user=>user.id===userId)===undefined)
+                throw new Error('userId isnt exist');
+            else {
+                const nowTweet={id: tweets.length+1,
+                                text: text,
+                                userId: userId};
+                tweets.push(nowTweet);
+                return nowTweet;
+            }
+        }
+
+    },
     Query:{
         allUsers(){
             console.log("allUser function activate");
@@ -67,6 +83,11 @@ const resolvers ={
     User: {
         fullName({firstName, lastName}){
             return `${firstName} ${lastName}`;
+        }
+    },
+    Tweet:{
+        author({userId}){
+            return users.find((user)=>userId===user.id);
         }
     }
 }
