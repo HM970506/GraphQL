@@ -28,7 +28,9 @@ let users = [
 const typeDefs = gql`
     type User{
         id: ID
-        username: String
+        firstName: String!
+        lastName: String!
+        fullName: String!
     }
     type Tweet{ 
         id: ID
@@ -36,6 +38,7 @@ const typeDefs = gql`
         author: User
     }
     type Query{
+        allUsers: [User!]!
         allTweets: [Tweet!]!
         tweet(id: ID): Tweet!
         ping: String!
@@ -47,6 +50,10 @@ const typeDefs = gql`
 
 const resolvers ={
     Query:{
+        allUsers(){
+            console.log("allUser function activate");
+            return users;
+        },
         allTweets(){
             return tweets;
         },
@@ -55,6 +62,11 @@ const resolvers ={
         },
         ping(){
             return "pong";
+        }
+    },
+    User: {
+        fullName({firstName, lastName}){
+            return `${firstName} ${lastName}`;
         }
     }
 }
